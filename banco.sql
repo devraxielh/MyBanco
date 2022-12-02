@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 01-12-2022 a las 18:24:19
+-- Tiempo de generación: 02-12-2022 a las 03:21:33
 -- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.0.25
+-- Versión de PHP: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,9 +32,25 @@ CREATE TABLE `clientes` (
   `correo` varchar(50) NOT NULL,
   `cedula` varchar(255) NOT NULL,
   `nombre` varchar(50) NOT NULL,
-  `edad` int(11) NOT NULL,
-  `usuario` int(11) NOT NULL
+  `edad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `correo`, `cedula`, `nombre`, `edad`) VALUES
+(5, '1', '1', '1', 1);
+
+--
+-- Disparadores `clientes`
+--
+DELIMITER $$
+CREATE TRIGGER `crear_usuario` BEFORE INSERT ON `clientes` FOR EACH ROW BEGIN
+	INSERT INTO `usuarios`(`cliente`, `usuario`, `password`, `rol`) VALUES (new.ide,'j','kj',1);
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -92,11 +108,17 @@ CREATE TABLE `tipo_cuenta` (
 --
 
 CREATE TABLE `usuarios` (
-  `id` int(11) NOT NULL,
   `usuario` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `rol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`usuario`, `password`, `rol`) VALUES
+('j', 'kj', 1);
 
 --
 -- Índices para tablas volcadas
@@ -106,10 +128,9 @@ CREATE TABLE `usuarios` (
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id`) USING BTREE,
   ADD UNIQUE KEY `correo` (`correo`),
-  ADD UNIQUE KEY `cedula` (`cedula`),
-  ADD KEY `usuario` (`usuario`);
+  ADD UNIQUE KEY `cedula` (`cedula`);
 
 --
 -- Indices de la tabla `cuentas`
@@ -144,7 +165,6 @@ ALTER TABLE `tipo_cuenta`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `usuario` (`usuario`),
   ADD KEY `rol_id` (`rol`);
 
@@ -156,7 +176,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `cuentas`
@@ -181,12 +201,6 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `tipo_cuenta`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

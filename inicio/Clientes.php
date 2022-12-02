@@ -1,19 +1,16 @@
 <?php
-include_once BASE_URL."/Conexion/Conexion.php";
+include_once "Conexion.php";
 
-class Cliente extends Conexion
+class Clientes extends Conexion
 {
-    public $correo;
-    public $cedula;
     public $nombre;
-    public $edad;
-    public $usuario;
+    public $telefono;
 
     public function create()
     {
         $this->conectar();
-        $pre = mysqli_prepare($this->con,"INSERT INTO `clientes`(`correo`, `cedula`, `nombre`, `edad`) VALUES (?,?,?,?)");
-        $pre->bind_param('sssi',$this->correo,$this->cedula,$this->nombre,$this->edad);
+        $pre = mysqli_prepare($this->con,"INSERT INTO `clientes`(`nombre`, `telefono`) VALUES (?,?)");
+        $pre->bind_param('ss',$this->nombre,$this->telefono);
         $alert = new stdClass();
         try {
             $pre->execute();
